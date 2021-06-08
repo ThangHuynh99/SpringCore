@@ -11,9 +11,67 @@
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
-	<bean name="employee" class="com.spring.dto.Employee" init-method="Start" destroy-method="Destroy">
-		<!-- Cần có getter setter ở class Employee mới có thể gán giá trị cho biến -->
-		<property name="tenNhanVien" value="Huynh Ba Thang"></property>
-		<property name="age" value="22"></property>
-	</bean>  
+	<!-- factory-method không cho đối tượng được khởi tạo từ phương thức mặc 
+		định -->
+	<!-- <bean name="employee" class="com.spring.dto.Employee" > Cần có getter 
+		setter ở class Employee mới có thể gán giá trị cho biến <property name="tenNhanVien" 
+		value="Huynh Ba Thang"></property> <property name="age" value="22"></property> 
+		</bean> -->
+
+	<bean name="director" class="com.spring.dto.Director">
+		<constructor-arg value="Giam Doc"></constructor-arg>
+		<constructor-arg value="Huỳnh Bá Thắng"></constructor-arg>
+		<constructor-arg type="int" value="18"></constructor-arg>
+	</bean>
+
+	<bean name="employee" class="com.spring.dto.Employee">
+		<!-- chọn hàm tạo khác trong class -->
+		<!-- <constructor-arg value="Huỳnh Bá Thắng"></constructor-arg> <constructor-arg 
+			value="22"></constructor-arg> -->
+		<constructor-arg ref="director"></constructor-arg>
+	</bean>
+
+	<!-- bean này đc khởi tạo thông qua factory-bean -->
+	<!-- đối tượng được tạo từ factory-method và hàm đó k đc là static -->
+	<bean name="employee1" factory-bean="employee"
+		factory-method="createEmployee">
+	</bean>
+
+
+	<!-- gán giá trị dạng list, map, properties -->
+	 <bean name="employee2" factory-bean="employee"
+		factory-method="createEmployee">
+		
+		<property name="list">
+			<!-- kiểu dữ liệu cơ bản -->
+			<list>
+				<value>Huynh Ba Thang</value>
+				<value>Pham Thi Minh Thuy</value>
+				<value>Rickie</value>
+			</list>
+		</property>
+		
+		<property name="listDirector">
+			<list>
+				<ref bean="director"/>
+			</list>
+		</property>
+		
+		<property name="map">
+			<map>
+				<entry key="key1" value-ref="director"></entry>
+				<entry key="key2" value="Huynh Ba Thang"></entry>
+			</map>
+		</property>
+		
+		<property name="properties">
+			<props>
+				<prop key="jdbc">mysql</prop>
+				<prop key="user">root</prop>
+				<prop key="password">172304</prop>
+			</props>
+		</property>
+		
+	</bean> 
+	
 </beans>

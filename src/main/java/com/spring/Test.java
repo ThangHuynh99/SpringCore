@@ -6,6 +6,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.spring.config.BeansConfig;
+import com.spring.dto.Director;
 import com.spring.dto.Employee;
 
 public class Test {
@@ -14,8 +15,14 @@ public class Test {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Ioc.xml");
 //		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeansConfig.class);
 		Employee employee = (Employee) context.getBean("employee");
-		employee.Notify();
-		System.out.println("Name: " + employee.getTenNhanVien());
-		((ClassPathXmlApplicationContext) context).close();
+		Director director = (Director) context.getBean("director");
+		Employee emloyee2 = (Employee) context.getBean("employee2");
+//		System.out.println("Name: " + director.getTenNhanVien() + " Age: " + director.getAge() + " Chuc Vu: " + director.getChucVu());
+//		((ClassPathXmlApplicationContext) context).close();
+		
+		emloyee2.getList().stream().forEach(System.out::println);
+		emloyee2.getListDirector().stream().forEach(System.out::println);
+		
+		System.out.println(emloyee2.getProperties().getProperty("jdbc"));
 	}
 }
